@@ -8,6 +8,7 @@ authors = [
 ]
 requires-python = ">=3.13"
 dependencies = [
+    "python-dateutil>=2.9.0.post0",
     "stockholm>=0.5.7",
 ]
 

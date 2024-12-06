@@ -5,3 +5,18 @@ requires-python = ">=3.13"
 name = "budge"
 version = "0.1.0"
 source = { editable = "." }
+dependencies = [
+    { name = "stockholm" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "stockholm", specifier = ">=0.5.7" }]
+
+[[package]]
+name = "stockholm"
+version = "0.5.7"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/2b/0c/2bf69ec49a1303512d65c4ea953facd0e0486d94603cabaee85be824738d/stockholm-0.5.7.tar.gz", hash = "sha256:1ac3ee160cec7d2834f13b76e44ae7cc61bd68168c3db4456325818ee3b51333", size = 38536 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e3/87/c4c4543781c9459af89942847037a1bfe3ac6843b7e8b1a22507d89606ed/stockholm-0.5.7-py3-none-any.whl", hash = "sha256:49ca18676b14b2845b084f9f2d43448d15e895a2fcb107717026e5b55ef2b860", size = 31653 },
+]

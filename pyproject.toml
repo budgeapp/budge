@@ -7,7 +7,9 @@ authors = [
     { name = "Jesse Brooklyn Hannah", email = "jesse@jbhannah.net" }
 ]
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "stockholm>=0.5.7",
+]
 
 [build-system]
 requires = ["hatchling"]

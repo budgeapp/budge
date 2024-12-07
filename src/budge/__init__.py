@@ -12,6 +12,7 @@ class Transaction:
     date: date
     amount: Money
     description: str
+    parent: "RecurringTransaction | None" = None
 
     def __lt__(self, other: Self):
         return self.date < other.date
@@ -25,7 +26,12 @@ class RecurringTransaction:
 
     def __iter__(self):
         for next in self.rrule:
-            yield Transaction(next.date(), self.amount, self.description)
+            yield Transaction(
+                date=next.date(),
+                amount=self.amount,
+                description=self.description,
+                parent=self,
+            )
 
 
 @dataclass

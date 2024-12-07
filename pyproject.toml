@@ -1,22 +1,23 @@
 [project]
 name = "budge"
 version = "0.1.0"
-description = "Add your description here"
+description = "Track your budgets and forecast your balances with Python."
 readme = "README.md"
-authors = [
-    { name = "Jesse Brooklyn Hannah", email = "jesse@jbhannah.net" }
+authors = [{ name = "Jesse Brooklyn Hannah", email = "jesse@jbhannah.net" }]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)",
+    "Topic :: Office/Business :: Financial :: Accounting",
 ]
 requires-python = ">=3.13"
-dependencies = [
-    "python-dateutil>=2.9.0.post0",
-    "stockholm>=0.5.7",
-]
+dependencies = ["python-dateutil>=2.9.0.post0", "stockholm>=0.5.7"]
+
+[project.urls]
+Repository = "https://github.com/budgeapp/budge"
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [dependency-groups]
-dev = [
-    "pytest>=8.3.4",
-]
+dev = ["pytest>=8.3.4"]

@@ -9,6 +9,8 @@ from stockholm import Money
 
 @dataclass
 class Transaction:
+    """A single transaction record."""
+
     date: date
     amount: Money
     description: str
@@ -20,6 +22,8 @@ class Transaction:
 
 @dataclass
 class RecurringTransaction:
+    """A transaction that repeats on a schedule described by a `dateutil.rrule.rrule`."""
+
     rrule: rrule
     amount: Money
     description: str
@@ -36,6 +40,9 @@ class RecurringTransaction:
 
 @dataclass
 class Account:
+    """A register of transactions and repeating transactions that can be used to
+    calculate or forecast a balance for any point in time."""
+
     name: str
     transactions: list[Transaction] = field(default_factory=list)
     recurring_transactions: list[RecurringTransaction] = field(default_factory=list)

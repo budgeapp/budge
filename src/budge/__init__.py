@@ -46,11 +46,22 @@ class Account:
         ):
             yield transaction
 
-    def until(self, end_date: date = date.today()):
+    def transactions_range(
+        self, start_date: date | None = None, end_date: date | None = None
+    ):
+        """Iterate over transactions in the account over the given range."""
         for transaction in self:
-            if transaction.date > end_date:
+            if start_date and transaction.date < start_date:
+                continue
+            if end_date and transaction.date > end_date:
                 break
             yield transaction
 
     def balance(self, as_of: date = date.today()) -> Money:
-        return Money(sum(transaction.amount for transaction in self.until(as_of)))
+        """Calculate the account balance as of the given date."""
+        return Money(
+            sum(
+                transaction.amount
+                for transaction in self.transactions_range(end_date=as_of)
+            )
+        )

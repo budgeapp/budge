@@ -23,9 +23,13 @@ class TestAccount:
     def test_balance(self):
         assert self.acct.balance(self.today) == Money(1)
 
-    def test_until(self):
+    def test_balance_as_of_future(self):
         as_of = self.today + relativedelta(years=1)
-        transactions = list(self.acct.until(as_of))
-
-        assert len(transactions) == 25
         assert self.acct.balance(as_of) == Money(37)
+
+    def test_transactions_range(self):
+        start_date = self.today + relativedelta(months=6)
+        end_date = self.today + relativedelta(months=9)
+
+        transactions = list(self.acct.transactions_range(start_date, end_date))
+        assert len(transactions) == 6

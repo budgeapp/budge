@@ -14,9 +14,9 @@ pip install budge
 
 ## Usage
 
-See the [demo notebook](demo.ipynb) for usage examples.
+See the [demo notebook](https://github.com/budgeapp/budge/blob/trunk/demo.ipynb) for usage examples.
 
 ## Copyright
 
 Copyright © 2024 Jesse Brooklyn Hannah. Licensed under the terms of the
-[GNU Lesser General Public License, version 3 or later](LICENSE.md).
+[GNU Lesser General Public License, version 3 or later](https://github.com/budgeapp/budge/blob/trunk/LICENSE.md).

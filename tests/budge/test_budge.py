@@ -4,7 +4,7 @@ from dateutil.relativedelta import relativedelta
 from dateutil.rrule import MONTHLY, rrule
 from stockholm import Money
 
-from budge import Account, RecurringTransaction, Transaction
+from budge import Account, RecurringTransaction, Transaction, Transfer
 
 
 class TestAccount:
@@ -45,3 +45,29 @@ class TestAccount:
 
         transactions = list(self.acct.transactions_range(start_date, end_date))
         assert len(transactions) == 6
+
+
+class TestTransfer:
+    today = date(2022, 12, 6)
+
+    a1 = Account("a1")
+    a2 = Account("a2")
+
+    def test_transfer(self):
+        """
+        Verify that a transfer between two accounts correctly updates the
+        balance of each account.
+        """
+        transfer = Transfer(
+            date=self.today,
+            amount=Money(100),
+            description="test transfer",
+            from_account=self.a1,
+            to_account=self.a2,
+        )
+
+        assert transfer.from_transaction.amount == Money(-100)
+        assert transfer.to_transaction.amount == Money(100)
+
+        assert self.a1.balance(self.today) == Money(-100)
+        assert self.a2.balance(self.today) == Money(100)

@@ -21,13 +21,25 @@ class TestAccount:
     acct = Account("test", [t1], [rt1, rt2])
 
     def test_balance(self):
+        """
+        Verify that the balance on the given date is equal to the value of all
+        transactions up to and including that date.
+        """
         assert self.acct.balance(self.today) == Money(1)
 
     def test_balance_as_of_future(self):
+        """
+        Verify that the balance as of one year in the future is equal to the
+        expected amount after accounting for all recurring transactions.
+        """
         as_of = self.today + relativedelta(years=1)
         assert self.acct.balance(as_of) == Money(37)
 
     def test_transactions_range(self):
+        """
+        Verify that the transactions_range method returns the correct number of
+        transactions between the given start and end dates.
+        """
         start_date = self.today + relativedelta(months=6)
         end_date = self.today + relativedelta(months=9)
 

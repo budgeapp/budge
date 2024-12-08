@@ -10,13 +10,13 @@ from budge import Account, RecurringTransaction, Transaction
 class TestAccount:
     today = date(2022, 12, 6)
 
-    t1 = Transaction(date(2022, 12, 6), Money(1), "test 1")
+    t1 = Transaction(Money(1), "test 1", date(2022, 12, 6))
 
     rule1 = rrule(freq=MONTHLY, bymonthday=1, dtstart=today)
-    rt1 = RecurringTransaction(rule1, Money(1), "test 1")
+    rt1 = RecurringTransaction(Money(1), "test 1", schedule=rule1)
 
     rule2 = rrule(freq=MONTHLY, bymonthday=15, dtstart=today)
-    rt2 = RecurringTransaction(rule2, Money(2), "test 2")
+    rt2 = RecurringTransaction(Money(2), "test 2", schedule=rule2)
 
     acct = Account("test", [t1], [rt1, rt2])
 

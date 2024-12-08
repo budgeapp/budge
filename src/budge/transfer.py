@@ -18,8 +18,8 @@ class Transfer(Transaction):
         Create the from and to transactions, add them to the respective accounts,
         and set their parent to this transfer.
         """
-        self.from_transaction = Transaction(self.date, -self.amount, self.description)
-        self.to_transaction = Transaction(self.date, self.amount, self.description)
+        self.from_transaction = Transaction(-self.amount, self.description, self.date)
+        self.to_transaction = Transaction(self.amount, self.description, self.date)
 
         self.from_transaction.parent = self.to_transaction.parent = self
 

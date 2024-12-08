@@ -1,5 +1,5 @@
-from dataclasses import dataclass
-from datetime import date
+from dataclasses import dataclass, field
+from datetime import date as _date
 from typing import Self
 
 from dateutil.rrule import rrule
@@ -10,26 +10,24 @@ from stockholm import Money
 class Transaction:
     """A single transaction record."""
 
-    date: date
     amount: Money
     description: str
-    parent: "RecurringTransaction | Transaction | None" = None
+    date: _date = field(default_factory=_date.today)
+    parent: "Transaction | None" = field(default=None, kw_only=True)
 
     def __lt__(self, other: Self):
         """Compare transactions based on their date for ordering."""
         return self.date < other.date
 
 
-@dataclass
-class RecurringTransaction:
+@dataclass(kw_only=True)
+class RecurringTransaction(Transaction):
     """
     A transaction that repeats on a schedule described by a
     `dateutil.rrule.rrule`.
     """
 
-    rrule: rrule
-    amount: Money
-    description: str
+    schedule: rrule
 
     def __iter__(self):
         """
@@ -37,7 +35,7 @@ class RecurringTransaction:
         specified amount and description, and link them to this recurring
         transaction as their parent.
         """
-        for next in self.rrule:
+        for next in self.schedule:
             yield Transaction(
                 date=next.date(),
                 amount=self.amount,

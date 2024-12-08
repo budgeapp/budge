@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.2.0 (unreleased)
+## v0.2.0 (2024-12-08)
 
 - Added `Transfer` model for transfers between accounts.
 - Renamed `RecurringTransaction.rrule` to `RecurringTransaction.schedule`.

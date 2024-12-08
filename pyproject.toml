@@ -1,6 +1,6 @@
 [project]
 name = "budge"
-version = "0.1.0"
+version = "0.2.0"
 description = "Track your budgets and forecast your balances with Python."
 readme = "README.md"
 authors = [{ name = "Jesse Brooklyn Hannah", email = "jesse@jbhannah.net" }]
@@ -20,8 +20,4 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [dependency-groups]
-dev = [
-    "ipykernel>=6.29.5",
-    "ipython>=8.30.0",
-    "pytest>=8.3.4",
-]
+dev = ["ipykernel>=6.29.5", "ipython>=8.30.0", "pytest>=8.3.4"]

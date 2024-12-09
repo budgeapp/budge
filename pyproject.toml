@@ -22,6 +22,7 @@ docs = [
 
 [project.urls]
 Repository = "https://github.com/budgeapp/budge"
+Documentation = "https://budge.readthedocs.io/"
 
 [build-system]
 requires = ["hatchling"]

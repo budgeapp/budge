@@ -41,11 +41,11 @@ class Account:
                 break
             yield transaction
 
-    def balance(self, as_of: date = date.today()) -> Money:
+    def balance(self, as_of: date | None = None):
         """Calculate the account balance as of the given date."""
-        return Money(
-            sum(
-                transaction.amount
-                for transaction in self.transactions_range(end_date=as_of)
-            )
+        as_of = as_of or date.today()
+
+        return Money.sum(
+            transaction.amount
+            for transaction in self.transactions_range(end_date=as_of)
         )

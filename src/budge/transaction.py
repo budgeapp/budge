@@ -13,7 +13,7 @@ class Transaction:
     amount: Money
     description: str
     date: _date = field(default_factory=_date.today)
-    parent: "Transaction | None" = field(default=None, kw_only=True)
+    parent: Self | None = field(default=None, kw_only=True)
 
     def __lt__(self, other: Self):
         """Compare transactions based on their date for ordering."""

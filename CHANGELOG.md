@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.3.0 (unreleased)
+## v0.3.0 (2024-12-08)
 
 - Added `RecurringTransfer` model.
 

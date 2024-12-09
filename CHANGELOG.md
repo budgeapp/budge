@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.3.0 (unreleased)
+
+- Added `RecurringTransfer` model.
+
 ## v0.2.0 (2024-12-08)
 
 - Added `Transfer` model for transfers between accounts.

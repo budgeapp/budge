@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.4.0 (unreleased)
+
+- Renamed `RecurringTransaction` and `RecurringTransfer` to
+  `RepeatingTransaction` and `RepeatingTransfer`.
+
 ## v0.3.0 (2024-12-08)
 
 - Added `RecurringTransfer` model.

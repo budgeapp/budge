@@ -4,7 +4,7 @@ from dateutil.relativedelta import relativedelta
 from dateutil.rrule import MONTHLY, rrule
 from stockholm import Money
 
-from budge import Account, RecurringTransaction, Transaction
+from budge import Account, RepeatingTransaction, Transaction
 
 
 class TestAccount:
@@ -13,10 +13,10 @@ class TestAccount:
     t1 = Transaction(Money(1), "test 1", date(2022, 12, 6))
 
     rule1 = rrule(freq=MONTHLY, bymonthday=1, dtstart=today)
-    rt1 = RecurringTransaction(Money(1), "test 1", schedule=rule1)
+    rt1 = RepeatingTransaction(Money(1), "test 1", schedule=rule1)
 
     rule2 = rrule(freq=MONTHLY, bymonthday=15, dtstart=today)
-    rt2 = RecurringTransaction(Money(2), "test 2", schedule=rule2)
+    rt2 = RepeatingTransaction(Money(2), "test 2", schedule=rule2)
 
     acct = Account("test", [t1], [rt1, rt2])
 
@@ -30,7 +30,7 @@ class TestAccount:
     def test_balance_as_of_future(self):
         """
         Verify that the balance as of one year in the future is equal to the
-        expected amount after accounting for all recurring transactions.
+        expected amount after accounting for all repeating transactions.
         """
         as_of = self.today + relativedelta(years=1)
         assert self.acct.balance(as_of) == Money(37)

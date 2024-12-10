@@ -4,7 +4,7 @@ from heapq import merge
 
 from stockholm import Money
 
-from .transaction import RecurringTransaction, Transaction
+from .transaction import RepeatingTransaction, Transaction
 
 
 @dataclass
@@ -16,17 +16,17 @@ class Account:
 
     name: str
     transactions: list[Transaction] = field(default_factory=list)
-    recurring_transactions: list[RecurringTransaction] = field(default_factory=list)
+    repeating_transactions: list[RepeatingTransaction] = field(default_factory=list)
 
     def __iter__(self):
         """
         Iterate over all transactions in the account, including those generated
-        by recurring transactions, ordered by date. This is useful for
+        by repeating transactions, ordered by date. This is useful for
         calculating or forecasting a balance for any point in time.
         """
 
         for transaction in merge(
-            *self.recurring_transactions, sorted(self.transactions)
+            *self.repeating_transactions, sorted(self.transactions)
         ):
             yield transaction
 

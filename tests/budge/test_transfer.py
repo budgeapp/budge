@@ -5,7 +5,7 @@ from dateutil.rrule import MONTHLY, rrule
 from stockholm import Money
 
 from budge import Account, Transfer
-from budge.transfer import RecurringTransfer
+from budge.transfer import RepeatingTransfer
 
 
 class TestTransfer:
@@ -34,18 +34,18 @@ class TestTransfer:
         assert self.a2.balance(self.today) == Money(100)
 
 
-class TestRecurringTransfer:
+class TestRepeatingTransfer:
     today = date(2022, 12, 6)
 
     a1 = Account("a1")
     a2 = Account("a2")
 
-    def test_recurring_transfer(self):
+    def test_repeating_transfer(self):
         """
-        Verify that a recurring transfer between two accounts correctly updates
+        Verify that a repeating transfer between two accounts correctly updates
         the balance of each account.
         """
-        transfer = RecurringTransfer(
+        transfer = RepeatingTransfer(
             amount=Money(100),
             description="test transfer",
             from_account=self.a1,

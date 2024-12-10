@@ -1,11 +1,11 @@
 from .account import Account
-from .transaction import RecurringTransaction, Transaction
-from .transfer import RecurringTransfer, Transfer
+from .transaction import RepeatingTransaction, Transaction
+from .transfer import RepeatingTransfer, Transfer
 
 __all__ = [
     "Account",
-    "RecurringTransaction",
-    "RecurringTransfer",
+    "RepeatingTransaction",
+    "RepeatingTransfer",
     "Transaction",
     "Transfer",
 ]

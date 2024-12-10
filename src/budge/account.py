@@ -15,8 +15,8 @@ class Account:
     """
 
     name: str
-    transactions: list[Transaction] = field(default_factory=list)
-    repeating_transactions: list[RepeatingTransaction] = field(default_factory=list)
+    transactions: set[Transaction] = field(default_factory=set)
+    repeating_transactions: set[RepeatingTransaction] = field(default_factory=set)
 
     def __iter__(self):
         """

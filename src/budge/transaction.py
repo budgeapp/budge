@@ -15,6 +15,9 @@ class Transaction:
     date: _date = field(default_factory=_date.today)
     parent: Self | None = field(default=None, kw_only=True)
 
+    def __hash__(self):
+        return hash((self.amount, self.description, self.date))
+
     def __lt__(self, other: Self):
         """Compare transactions based on their date for ordering."""
         return self.date < other.date
@@ -28,6 +31,9 @@ class RepeatingTransaction(Transaction):
     """
 
     schedule: rrule
+
+    def __hash__(self):
+        return hash((self.amount, self.description, self.schedule))
 
     def __iter__(self):
         """

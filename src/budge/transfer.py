@@ -23,8 +23,8 @@ class Transfer(Transaction):
 
         self.from_transaction.parent = self.to_transaction.parent = self
 
-        from_account.transactions.append(self.from_transaction)
-        to_account.transactions.append(self.to_transaction)
+        from_account.transactions.add(self.from_transaction)
+        to_account.transactions.add(self.to_transaction)
 
 
 @dataclass(kw_only=True)
@@ -48,5 +48,5 @@ class RepeatingTransfer(Transfer, RepeatingTransaction):
 
         self.from_transaction.parent = self.to_transaction.parent = self
 
-        from_account.repeating_transactions.append(self.from_transaction)
-        to_account.repeating_transactions.append(self.to_transaction)
+        from_account.repeating_transactions.add(self.from_transaction)
+        to_account.repeating_transactions.add(self.to_transaction)

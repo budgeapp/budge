@@ -29,4 +29,9 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [dependency-groups]
-dev = ["ipykernel>=6.29.5", "ipython>=8.30.0", "pytest>=8.3.4"]
+dev = [
+    "ipykernel>=6.29.5",
+    "ipython>=8.30.0",
+    "pytest-cov>=6.0.0",
+    "pytest>=8.3.4",
+]

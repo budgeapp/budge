@@ -9,3 +9,7 @@ wheels/
 
 # Virtual environments
 .venv
+
+# Coverage
+.coverage
+coverage/

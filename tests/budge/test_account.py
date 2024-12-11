@@ -10,7 +10,7 @@ from budge import Account, RepeatingTransaction, Transaction
 class TestAccount:
     today = date(2022, 12, 6)
 
-    t1 = Transaction(Money(1), "test 1", date(2022, 12, 6))
+    t1 = Transaction(Money(1), "test 1", date(2022, 12, 1))
 
     rule1 = rrule(freq=MONTHLY, bymonthday=1, dtstart=today)
     rt1 = RepeatingTransaction(Money(1), "test 1", schedule=rule1)
@@ -46,21 +46,35 @@ class TestAccount:
         transactions = list(self.acct.transactions_range(start_date, end_date))
         assert len(transactions) == 6
 
-    def test_balance_iter(self):
+    def test_daily_balance_past(self):
         """
-        Verify that the balance_iter method returns the correct number of
-        balances between the given start and end dates.
+        Verify that the daily_balance method returns the correct balances for each
+        day in the past month, starting from a given start date and ending on today's
+        date. The initial balance should be zero, and the balance on today's date
+        should match the expected value.
         """
-        start_date = self.today + relativedelta(months=6)
-        end_date = self.today + relativedelta(months=9)
+        start_date = date(2022, 11, 6)
+        balances = list(
+            self.acct.daily_balance(start_date=start_date, end_date=self.today)
+        )
 
-        balances = list(self.acct.balance_iter(start_date, end_date))
+        assert len(balances) == 31
+        assert balances[0] == (start_date, Money(0))
+        assert balances[-1] == (self.today, Money(1))
 
-        assert balances == [
-            (date(2023, 6, 15), Money(21)),
-            (date(2023, 7, 1), Money(22)),
-            (date(2023, 7, 15), Money(24)),
-            (date(2023, 8, 1), Money(25)),
-            (date(2023, 8, 15), Money(27)),
-            (date(2023, 9, 1), Money(28)),
-        ]
+    def test_daily_balance_future(self):
+        """
+        Verify that the daily_balance method returns the correct balances for each
+        day in the future month, starting from today's date and ending on a given
+        end date. The initial balance should be the expected value, and the balance
+        on the end date should match the expected value.
+        """
+        end_date = self.today + relativedelta(months=1)
+        balances = list(
+            self.acct.daily_balance(start_date=self.today, end_date=end_date)
+        )
+
+        assert len(balances) == 32
+        assert balances[0] == (self.today, Money(1))
+        assert balances[9] == (date(2022, 12, 15), Money(3))
+        assert balances[-1] == (end_date, Money(4))

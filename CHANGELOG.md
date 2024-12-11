@@ -2,9 +2,9 @@
 
 ## v0.4.0 (unreleased)
 
+- Added `Account.daily_balance` to iterate through account balance by date.
 - Renamed `RecurringTransaction` and `RecurringTransfer` to
   `RepeatingTransaction` and `RepeatingTransfer`.
-- Add `Account.balance_iter` to iterate through balances by date
 
 ## v0.3.0 (2024-12-08)
 

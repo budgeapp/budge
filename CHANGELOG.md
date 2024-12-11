@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.4.0 (unreleased)
+## v0.4.0 (2024-12-11)
 
 - Added `Account.daily_balance` to iterate through account balance by date.
 - Renamed `RecurringTransaction` and `RecurringTransfer` to

@@ -45,3 +45,22 @@ class TestAccount:
 
         transactions = list(self.acct.transactions_range(start_date, end_date))
         assert len(transactions) == 6
+
+    def test_balance_iter(self):
+        """
+        Verify that the balance_iter method returns the correct number of
+        balances between the given start and end dates.
+        """
+        start_date = self.today + relativedelta(months=6)
+        end_date = self.today + relativedelta(months=9)
+
+        balances = list(self.acct.balance_iter(start_date, end_date))
+
+        assert balances == [
+            (date(2023, 6, 15), Money(21)),
+            (date(2023, 7, 1), Money(22)),
+            (date(2023, 7, 15), Money(24)),
+            (date(2023, 8, 1), Money(25)),
+            (date(2023, 8, 15), Money(27)),
+            (date(2023, 9, 1), Money(28)),
+        ]

@@ -4,6 +4,7 @@
 
 - Renamed `RecurringTransaction` and `RecurringTransfer` to
   `RepeatingTransaction` and `RepeatingTransfer`.
+- Add `Account.balance_iter` to iterate through balances by date
 
 ## v0.3.0 (2024-12-08)
 

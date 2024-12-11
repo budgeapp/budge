@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 from datetime import date
 from heapq import merge
+from itertools import groupby
 
 from stockholm import Money
 
@@ -24,11 +25,7 @@ class Account:
         by repeating transactions, ordered by date. This is useful for
         calculating or forecasting a balance for any point in time.
         """
-
-        for transaction in merge(
-            *self.repeating_transactions, sorted(self.transactions)
-        ):
-            yield transaction
+        yield from merge(sorted(self.transactions), *self.repeating_transactions)
 
     def transactions_range(
         self, start_date: date | None = None, end_date: date | None = None
@@ -49,3 +46,28 @@ class Account:
             transaction.amount
             for transaction in self.transactions_range(end_date=as_of)
         )
+
+    def balance_iter(
+        self, start_date: date | None = None, end_date: date | None = None
+    ):
+        """
+        Iterate over the account's balance over the given range, yielding a
+        tuple of each date in the range and the account balance on that date.
+
+        If `start_date` is not provided, the first yield will be the initial
+        balance of the account.
+
+        If `end_date` is not provided, the iteration will continue until all
+        transactions in the account have been iterated over.
+
+        :param start_date: The start date of the range
+        :param end_date: The end date of the range
+        :yield: A tuple of (date, balance) for each day in the range
+        """
+        bal = self.balance(start_date) if start_date else Money(0)
+
+        for date_, transactions in groupby(
+            self.transactions_range(start_date, end_date), lambda t: t.date
+        ):
+            bal += Money.sum(transaction.amount for transaction in transactions)
+            yield date_, bal

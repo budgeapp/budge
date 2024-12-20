@@ -4,8 +4,7 @@ from dateutil.relativedelta import relativedelta
 from dateutil.rrule import MONTHLY, rrule
 from stockholm import Money
 
-from budge import Account, Transfer
-from budge.transfer import RepeatingTransfer
+from budge import Account, RepeatingTransfer, Transfer
 
 
 class TestTransfer:

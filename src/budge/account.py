@@ -31,7 +31,7 @@ class Account:
 
     def transactions_range(
         self, start_date: date | None = None, end_date: date | None = None
-    ):
+    ) -> Generator[Transaction]:
         """Iterate over transactions in the account over the given range."""
         for transaction in self:
             if start_date and transaction.date < start_date:
@@ -73,7 +73,9 @@ class Account:
             balance += delta
             yield _date, balance
 
-    def _deltas_by_date(self, start_date: date, end_date: date):
+    def _deltas_by_date(
+        self, start_date: date, end_date: date
+    ) -> Generator[tuple[date, Money]]:
         """
         Iterate over the deltas in the account balance for each date in the
         given range, including the given start and end dates.
@@ -88,7 +90,9 @@ class Account:
             )
         )
 
-    def _daily_balance_delta(self, start_date: date, end_date: date):
+    def _daily_balance_delta(
+        self, start_date: date, end_date: date
+    ) -> Generator[tuple[date, Money]]:
         """
         Calculate the daily change in account balance over the specified date range.
 

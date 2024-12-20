@@ -83,7 +83,7 @@ class Account:
         Yields tuples, where the first element is the date and the second
         element is the total amount of all transactions on that date.
         """
-        return (
+        yield from (
             (_date, Money.sum(transaction.amount for transaction in transactions))
             for _date, transactions in groupby(
                 self.transactions_range(start_date, end_date), key=lambda t: t.date
@@ -101,7 +101,7 @@ class Account:
         deltas from actual transactions and placeholder deltas for dates without
         transactions to ensure a continuous range.
         """
-        return (
+        yield from (
             (_date, Money.sum(delta[1] for delta in deltas))
             for _date, deltas in groupby(
                 merge(

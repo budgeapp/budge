@@ -44,10 +44,12 @@ class RepeatingTransaction(Transaction):
         amount and description, and link them to this repeat transaction as
         their parent.
         """
-        for next in self.schedule:
-            yield Transaction(
+        yield from (
+            Transaction(
                 date=next.date(),
                 amount=self.amount,
                 description=self.description,
                 parent=self,
             )
+            for next in self.schedule
+        )

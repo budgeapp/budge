@@ -6,6 +6,7 @@ from typing import Generator
 
 from stockholm import Money
 
+from .collection import Collection
 from .date import daterange
 from .transaction import RepeatingTransaction, Transaction
 
@@ -18,10 +19,12 @@ class Account:
     """
 
     name: str
-    transactions: set[Transaction] = field(default_factory=set[Transaction])
-    repeating_transactions: set[RepeatingTransaction] = field(
-        default_factory=set[RepeatingTransaction]
-    )
+    transactions: Collection[Transaction] = field(init=False)
+    repeating_transactions: Collection[RepeatingTransaction] = field(init=False)
+
+    def __post_init__(self):
+        self.transactions = Collection[Transaction]("account", self)
+        self.repeating_transactions = Collection[RepeatingTransaction]("account", self)
 
     def __iter__(self):
         """

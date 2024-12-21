@@ -18,7 +18,10 @@ class TestAccount:
     rule2 = rrule(freq=MONTHLY, bymonthday=15, dtstart=today)
     rt2 = RepeatingTransaction(Money(2), "test 2", schedule=rule2)
 
-    acct = Account("test", set([t1]), set([rt1, rt2]))
+    acct = Account("test")
+    acct.transactions.add(t1)
+    acct.repeating_transactions.add(rt1)
+    acct.repeating_transactions.add(rt2)
 
     def test_balance(self):
         """

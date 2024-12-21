@@ -5,6 +5,8 @@ from typing import Self
 from dateutil.rrule import rrule
 from stockholm import Money
 
+from . import account
+
 
 @dataclass
 class Transaction:
@@ -13,6 +15,7 @@ class Transaction:
     amount: Money
     description: str
     date: _date = field(default_factory=_date.today)
+    account: "account.Account | None" = field(default=None, kw_only=True)
     parent: Self | None = field(default=None, kw_only=True)
 
     def __hash__(self):

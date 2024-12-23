@@ -6,12 +6,13 @@ class Collection[T](set[T]):
     _attr_parent: str
     _parent: object
 
-    def add(self, item: T):
-        if getattr(item, self._attr_parent) is not None:
-            raise ValueError("item already belongs to another collection")
+    def add(self, *items: T):
+        for item in items:
+            if getattr(item, self._attr_parent) is not None:
+                raise ValueError("item already belongs to another collection")
 
-        super().add(item)
-        setattr(item, self._attr_parent, self._parent)
+            super().add(item)
+            setattr(item, self._attr_parent, self._parent)
 
     def remove(self, item: T):
         self._detach(item)

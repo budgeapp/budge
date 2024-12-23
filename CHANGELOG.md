@@ -1,5 +1,7 @@
 # Changelog
 
+## v0.6.0 (unreleased)
+
 ## v0.5.0 (2024-12-23)
 
 - Refactored `Account.transactions` and `Account.repeating_transactions` to a

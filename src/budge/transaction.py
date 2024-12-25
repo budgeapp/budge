@@ -46,9 +46,10 @@ class RepeatingTransaction(Transaction):
         """
         yield from (
             Transaction(
-                date=next.date(),
                 amount=self.amount,
                 description=self.description,
+                date=next.date(),
+                account=self.account,
                 parent=self,
             )
             for next in self.schedule

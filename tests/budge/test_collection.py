@@ -42,7 +42,7 @@ def test_add_multiple_items(collection):
 def test_add_item_already_in_other_collection(collection):
     item = Item()
     item.parent = object()
-    with pytest.raises(ValueError, match="item already belongs to another collection"):
+    with pytest.raises(ValueError, match="item already belongs to a collection"):
         collection.add(item)
 
 
@@ -56,6 +56,14 @@ def test_remove_item(collection):
 
 def test_remove_item_not_in_collection(collection):
     item = Item()
+    with pytest.raises(KeyError):
+        collection.remove(item)
+
+
+def test_remove_item_in_other_collection(collection):
+    item = Item()
+    collection.add(item)
+    item.parent = None
     with pytest.raises(ValueError, match="item does not belong to this collection"):
         collection.remove(item)
 
@@ -71,7 +79,7 @@ def test_discard_item(collection):
 def test_pop_item(collection):
     item = Item()
     collection.add(item)
-    popped = collection.pop()
+    popped = collection.pop(hash(item))
     assert popped == item
     assert item not in collection
     assert item.parent is None

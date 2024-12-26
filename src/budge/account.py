@@ -2,13 +2,18 @@ from dataclasses import dataclass, field
 from datetime import date, timedelta
 from heapq import merge
 from itertools import groupby
-from typing import Generator
+from typing import Generator, NamedTuple
 
 from stockholm import Money
 
 from .collection import Collection
 from .date import daterange
 from .transaction import RepeatingTransaction, Transaction
+
+
+class Balance(NamedTuple):
+    date: date
+    balance: Money
 
 
 @dataclass
@@ -66,7 +71,7 @@ class Account:
 
     def daily_balance(
         self, start_date: date | None = None, end_date: date | None = None
-    ) -> Generator[tuple[date, Money]]:
+    ) -> Generator[Balance]:
         """
         Iterate over the daily balance of the account, yielding tuples of date
         and balance.
@@ -80,17 +85,15 @@ class Account:
         end_date = end_date or date.today()
 
         balance = self.balance(start_date)
-        yield start_date, balance
+        yield Balance(start_date, balance)
 
         for _date, delta in self._daily_balance_delta(
             start_date + timedelta(days=1), end_date
         ):
             balance += delta
-            yield _date, balance
+            yield Balance(_date, balance)
 
-    def _deltas_by_date(
-        self, start_date: date, end_date: date
-    ) -> Generator[tuple[date, Money]]:
+    def _deltas_by_date(self, start_date: date, end_date: date) -> Generator[Balance]:
         """
         Iterate over the deltas in the account balance for each date in the
         given range, including the given start and end dates.
@@ -99,7 +102,9 @@ class Account:
         element is the total amount of all transactions on that date.
         """
         yield from (
-            (_date, Money.sum(transaction.amount for transaction in transactions))
+            Balance(
+                _date, Money.sum(transaction.amount for transaction in transactions)
+            )
             for _date, transactions in groupby(
                 self.transactions_range(start_date, end_date), key=lambda t: t.date
             )
@@ -107,7 +112,7 @@ class Account:
 
     def _daily_balance_delta(
         self, start_date: date, end_date: date
-    ) -> Generator[tuple[date, Money]]:
+    ) -> Generator[Balance]:
         """
         Calculate the daily change in account balance over the specified date range.
 
@@ -117,12 +122,15 @@ class Account:
         transactions to ensure a continuous range.
         """
         yield from (
-            (_date, Money.sum(delta[1] for delta in deltas))
+            Balance(_date, Money.sum(delta.balance for delta in deltas))
             for _date, deltas in groupby(
                 merge(
                     self._deltas_by_date(start_date, end_date),
-                    ((_date, Money(0)) for _date in daterange(start_date, end_date)),
+                    (
+                        Balance(_date, Money(0))
+                        for _date in daterange(start_date, end_date)
+                    ),
                 ),
-                key=lambda t: t[0],
+                key=lambda t: t.date,
             )
         )

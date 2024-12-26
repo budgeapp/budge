@@ -6,13 +6,14 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
+import importlib.metadata
 import os
 import sys
 
 project = "budge"
 copyright = "2024, Jesse Brooklyn Hannah"
 author = "Jesse Brooklyn Hannah"
-release = "0.7.0.dev0"
+release = importlib.metadata.version("budge")
 
 sys.path.insert(0, os.path.abspath("../src"))
 

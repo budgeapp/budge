@@ -12,7 +12,7 @@ import sys
 project = "budge"
 copyright = "2024, Jesse Brooklyn Hannah"
 author = "Jesse Brooklyn Hannah"
-release = "0.6.0.dev0"
+release = "0.6.0"
 
 sys.path.insert(0, os.path.abspath("../src"))
 

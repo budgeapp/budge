@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.6.0 (unreleased)
+## v0.6.0 (2024-12-25)
 
 - Set account property on `Transaction` objects generated from `RepeatingTransaction`
   objects.

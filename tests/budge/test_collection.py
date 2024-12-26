@@ -76,6 +76,11 @@ def test_discard_item(collection):
     assert item.parent is None
 
 
+def test_discard_item_not_in_collection(collection):
+    item = Item()
+    collection.discard(item)
+
+
 def test_pop_item(collection):
     item = Item()
     collection.add(item)
@@ -91,3 +96,9 @@ def test_clear_collection(collection):
     collection.clear()
     assert len(collection) == 0
     assert all(item.parent is None for item in items)
+
+
+def test_get_item(collection):
+    item = Item()
+    collection.add(item)
+    assert collection[hash(item)] == item

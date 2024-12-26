@@ -2,6 +2,11 @@
 
 ## v0.6.0 (unreleased)
 
+- Set account property on `Transaction` objects generated from `RepeatingTransaction`
+  objects.
+- Allow `dateutil.rrule.rruleset` in `RepeatingTransaction.schedule` and
+  `RepeatingTransfer.schedule`.
+
 ## v0.5.0 (2024-12-23)
 
 - Refactored `Account.transactions` and `Account.repeating_transactions` to a

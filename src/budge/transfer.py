@@ -31,7 +31,7 @@ class Transfer(Transaction):
 class RepeatingTransfer(Transfer, RepeatingTransaction):
     """
     A transfer between two accounts that repeats on a schedule described by a
-    `dateutil.rrule.rrule`.
+    `dateutil.rrule.rrule` or `dateutil.rrule.rruleset`.
     """
 
     def __post_init__(self, from_account: Account, to_account: Account):

@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from datetime import date as _date
 from typing import Self
 
-from dateutil.rrule import rrule
+from dateutil.rrule import rrule, rruleset
 from stockholm import Money
 
 from . import account
@@ -30,10 +30,10 @@ class Transaction:
 class RepeatingTransaction(Transaction):
     """
     A transaction that repeats on a schedule described by a
-    `dateutil.rrule.rrule`.
+    `dateutil.rrule.rrule` or `dateutil.rrule.rruleset`.
     """
 
-    schedule: rrule
+    schedule: rrule | rruleset
 
     def __hash__(self):
         return hash((self.amount, self.description, self.schedule))

@@ -14,12 +14,13 @@ class TestAccount:
 
     rule1 = rrule(freq=MONTHLY, bymonthday=1, dtstart=today)
     rt1 = RepeatingTransaction(Money(1), "test 1", schedule=rule1)
+    rt1_manual = Transaction(rt1.amount, rt1.description, rule1[0].date())
 
     rule2 = rrule(freq=MONTHLY, bymonthday=15, dtstart=today)
     rt2 = RepeatingTransaction(Money(2), "test 2", schedule=rule2)
 
     acct = Account("test")
-    acct.transactions.add(t1)
+    acct.transactions.add(t1, rt1_manual)
     acct.repeating_transactions.add(rt1)
     acct.repeating_transactions.add(rt2)
 

@@ -32,7 +32,17 @@ class Account:
         by repeating transactions, ordered by date. This is useful for
         calculating or forecasting a balance for any point in time.
         """
-        yield from merge(sorted(self.transactions), *self.repeating_transactions)
+        yield from merge(
+            sorted(self.transactions),
+            *(
+                (
+                    transaction
+                    for transaction in repeating_transaction
+                    if transaction not in self.transactions
+                )
+                for repeating_transaction in self.repeating_transactions
+            ),
+        )
 
     def transactions_range(
         self, start_date: date | None = None, end_date: date | None = None

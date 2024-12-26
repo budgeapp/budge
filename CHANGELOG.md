@@ -6,6 +6,10 @@
   objects.
 - Allow `dateutil.rrule.rruleset` in `RepeatingTransaction.schedule` and
   `RepeatingTransfer.schedule`.
+- Refactor internal storage of `Collection` instances to use `dict`.
+- Exclude `Transaction` objects generated from a `RepeatingTransaction` when iterating
+  over an account's transactions, if a manually entered `Transaction` matches the
+  generated `Transaction`.
 
 ## v0.5.0 (2024-12-23)
 

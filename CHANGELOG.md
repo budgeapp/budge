@@ -2,6 +2,10 @@
 
 ## v0.7.0 (unreleased)
 
+- Accept any value that can be passed to the constructor of `stockholm.Money`
+  wherever a `Money` object was required as an argument.
+- Swapped positions of the `amount` and `description` fields on `Transaction`.
+
 ## v0.6.0 (2024-12-25)
 
 - Set account property on `Transaction` objects generated from `RepeatingTransaction`
@@ -9,9 +13,9 @@
 - Allow `dateutil.rrule.rruleset` in `RepeatingTransaction.schedule` and
   `RepeatingTransfer.schedule`.
 - Refactor internal storage of `Collection` instances to use `dict`.
-- Exclude `Transaction` objects generated from a `RepeatingTransaction` when iterating
-  over an account's transactions, if a manually entered `Transaction` matches the
-  generated `Transaction`.
+- Exclude `Transaction` objects generated from a `RepeatingTransaction` when
+  iterating over an account's transactions, if a manually entered `Transaction`
+  matches the generated `Transaction`.
 
 ## v0.5.0 (2024-12-23)
 

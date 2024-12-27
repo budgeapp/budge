@@ -10,14 +10,14 @@ from budge import Account, RepeatingTransaction, Transaction
 class TestAccount:
     today = date(2022, 12, 6)
 
-    t1 = Transaction(Money(1), "test 1", date(2022, 12, 1))
+    t1 = Transaction("test 1", Money(1), date(2022, 12, 1))
 
     rule1 = rrule(freq=MONTHLY, bymonthday=1, dtstart=today)
-    rt1 = RepeatingTransaction(Money(1), "test 1", schedule=rule1)
-    rt1_manual = Transaction(rt1.amount, rt1.description, rule1[0].date())
+    rt1 = RepeatingTransaction("test 1", Money(1), schedule=rule1)
+    rt1_manual = Transaction(rt1.description, rt1.amount, rule1[0].date())
 
     rule2 = rrule(freq=MONTHLY, bymonthday=15, dtstart=today)
-    rt2 = RepeatingTransaction(Money(2), "test 2", schedule=rule2)
+    rt2 = RepeatingTransaction("test 2", Money(2), schedule=rule2)
 
     acct = Account("test")
     acct.transactions.add(t1, rt1_manual)

@@ -3,7 +3,8 @@ from datetime import date as _date
 from typing import Self
 
 from dateutil.rrule import rrule, rruleset
-from stockholm import Money
+
+from budge.money import IntoMoney
 
 from . import account
 
@@ -12,8 +13,8 @@ from . import account
 class Transaction:
     """A single transaction record."""
 
-    amount: Money
     description: str
+    amount: IntoMoney = IntoMoney()
     date: _date = field(default_factory=_date.today)
     account: "account.Account | None" = field(default=None, kw_only=True)
     parent: Self | None = field(default=None, kw_only=True)

@@ -1,18 +1,29 @@
+from collections.abc import Callable
 from decimal import Decimal
-from typing import Any, Union
+from typing import Any
 
-from stockholm import Money, MoneyType
+from stockholm import Money
 from stockholm.money import MoneyModel
 
-IntoMoneyType = Union[MoneyType, MoneyModel[Any], Decimal, int, float, str, object]
+type IntoMoneyType = MoneyModel[Money] | Decimal | int | float | str
+
+type IntoMoneyCallback = Callable[[Any], IntoMoneyType]
 
 
 class IntoMoney:
     def __set_name__(self, owner: Any, name: str):
         self._name = "_" + name
 
-    def __get__(self, instance, owner=None) -> Money:
-        return getattr(instance, self._name)
+    def __get__(self, instance: Any, owner=None) -> Money:
+        attr: Money | IntoMoneyCallback = getattr(instance, self._name)
 
-    def __set__(self, instance, value: IntoMoneyType):
-        setattr(instance, self._name, Money(value))
+        if isinstance(attr, Money):
+            return attr
+
+        return Money(attr(instance))
+
+    def __set__(self, instance, value: IntoMoneyType | IntoMoneyCallback):
+        if not callable(value):
+            value = Money(value)
+
+        setattr(instance, self._name, value)

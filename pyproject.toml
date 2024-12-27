@@ -14,7 +14,7 @@ dependencies = ["python-dateutil>=2.9.0.post0", "stockholm>=0.5.7"]
 
 [project.urls]
 Repository = "https://github.com/budgeapp/budge"
-Documentation = "https://budge.readthedocs.io/"
+Documentation = "https://budge.readthedocs.io/en/stable/"
 
 [build-system]
 requires = ["hatchling"]

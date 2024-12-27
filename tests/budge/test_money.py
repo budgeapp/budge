@@ -23,11 +23,11 @@ def test_into_money_from_str():
     assert obj.amount == Money(100)
 
 
-def test_money_from_none():
+def test_into_money_from_none():
     with raises(ConversionError, match="Missing input values for monetary amount"):
         IntoMoneyTest(None)
 
 
-def test_money_from_empty_string():
+def test_into_money_from_empty_string():
     with raises(ConversionError, match="Missing input values for monetary amount"):
         IntoMoneyTest("")

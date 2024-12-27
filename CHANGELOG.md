@@ -4,6 +4,8 @@
 
 - Accept any value that can be passed to the constructor of `stockholm.Money`
   wherever a `Money` object was required as an argument.
+- Accept a function that accepts the object instance as an argument and returns
+  a `Money`-convertible value as an `amount` parameter.
 - Swapped positions of the `amount` and `description` fields on `Transaction`.
 
 ## v0.6.0 (2024-12-25)

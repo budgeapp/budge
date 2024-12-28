@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.7.0 (unreleased)
+## v1.0.0 (2024-12-27)
 
 - Accept any value that can be passed to the constructor of `stockholm.Money`
   wherever a `Money` object was required as an argument.

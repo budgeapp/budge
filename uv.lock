@@ -39,7 +39,7 @@ wheels = [
 
 [[package]]
 name = "budge"
-version = "0.7.0.dev0"
+version = "1.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "python-dateutil" },

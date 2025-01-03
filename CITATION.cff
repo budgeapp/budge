@@ -1,0 +1,17 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: budge
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Jesse Brooklyn
+    family-names: Hannah
+    email: jesse@jbhannah.net
+    orcid: "https://orcid.org/0009-0008-3260-8113"
+repository-code: "https://github.com/budgeapp/budge"
+abstract: Track your budgets and forecast your balances with Python.
+license: LGPL-3.0-or-later

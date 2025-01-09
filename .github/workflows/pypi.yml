@@ -43,7 +43,7 @@ jobs:
         with:
           name: python-package-distributions
           path: dist/
-      - uses: pypa/gh-action-pypi-publish@67339c736fd9354cd4f8cb0b744f2b82a74b5c70
+      - uses: pypa/gh-action-pypi-publish@8cafb5c2bf2f478231c9abbba1feb4edb6ccf405
 
   github-release:
     runs-on: ubuntu-latest

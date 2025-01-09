@@ -5,10 +5,15 @@ on:
     tags:
       - v*.*.*
 
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
     environment: release
+    permissions:
+      actions: write
 
     steps:
       - uses: actions/checkout@v4

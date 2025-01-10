@@ -21,7 +21,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [dependency-groups]
-dev = ["ipykernel~=6.29.5", "ipython~=8.30.0"]
+dev = ["ipykernel~=6.29.5", "ipython~=8.31.0"]
 docs = [
     "sphinx-autodoc-typehints~=2.5.0",
     "sphinx~=8.1.3",

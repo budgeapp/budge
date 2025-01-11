@@ -50,6 +50,15 @@ class TestAccount:
         transactions = list(self.acct.transactions_range(start_date, end_date))
         assert len(transactions) == 6
 
+    def test_transactions_range_is_sorted(self):
+        """Verify that transactions yielded by Account.__iter__ are ordered by ascending
+        date."""
+        next_date = list(self.acct.transactions)[0].date
+
+        for transaction in self.acct.transactions:
+            assert transaction.date >= next_date
+            next_date = transaction.date
+
     def test_daily_balance_past(self):
         """
         Verify that the daily_balance method returns the correct balances for each

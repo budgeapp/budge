@@ -59,6 +59,15 @@ class TestAccount:
             assert transaction.date >= next_date
             next_date = transaction.date
 
+    def test_running_balance(self):
+        end_date = self.today + relativedelta(months=3)
+        balances = list(self.acct.running_balance(self.today, end_date))
+
+        assert len(balances) == 6
+        assert balances[0].balance == Money(3)
+        assert balances[1].balance == Money(4)
+        assert balances[-1].balance == Money(10)
+
     def test_daily_balance_past(self):
         """
         Verify that the daily_balance method returns the correct balances for each

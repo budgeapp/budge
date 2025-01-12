@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.1.0 (unreleased)
+
+- Added `Account.running_balance` that iterates through each transaction in an
+  account for the given date range, and includes the current running balance of
+  the account.
+
 ## v1.0.0 (2024-12-27)
 
 - Accept any value that can be passed to the constructor of `stockholm.Money`

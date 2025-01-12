@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.1.0 (unreleased)
+## v1.1.0 (2025-01-11)
 
 - Added `Account.running_balance` that iterates through each transaction in an
   account for the given date range, and includes the current running balance of

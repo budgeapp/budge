@@ -16,8 +16,8 @@
 
 ## v0.6.0 (2024-12-25)
 
-- Set account property on `Transaction` objects generated from `RepeatingTransaction`
-  objects.
+- Set account property on `Transaction` objects generated from
+  `RepeatingTransaction` objects.
 - Allow `dateutil.rrule.rruleset` in `RepeatingTransaction.schedule` and
   `RepeatingTransfer.schedule`.
 - Refactor internal storage of `Collection` instances to use `dict`.

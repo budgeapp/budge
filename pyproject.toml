@@ -1,6 +1,6 @@
 [project]
 name = "budge"
-version = "1.1.0"
+version = "1.1.1"
 description = "Track your budgets and forecast your balances with Python."
 readme = "README.md"
 authors = [{ name = "Jesse Brooklyn Hannah", email = "jesse@jbhannah.net" }]

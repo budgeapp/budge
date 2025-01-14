@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.1.1 (2025-01-13)
+
+- Removed the ability to set a transaction's amount to a callback until I've
+  redesigned how that functionality should work.
+
 ## v1.1.0 (2025-01-11)
 
 - Added `Account.running_balance` that iterates through each transaction in an

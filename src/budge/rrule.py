@@ -29,16 +29,20 @@ class rruleset:
         return d if isinstance(d, datetime) else datetime.combine(d, time(0, 0))
 
     @property
-    def _rrule(self) -> List[dateutil.rrule.rrule]: ...
+    def _rrule(self) -> List[dateutil.rrule.rrule]:
+        raise AttributeError
 
     @property
-    def _rdate(self) -> List[date]: ...
+    def _rdate(self) -> List[date]:
+        raise AttributeError
 
     @property
-    def _exrule(self) -> List[dateutil.rrule.rrule]: ...
+    def _exrule(self) -> List[dateutil.rrule.rrule]:
+        raise AttributeError
 
     @property
-    def _exdate(self) -> List[date]: ...
+    def _exdate(self) -> List[date]:
+        raise AttributeError
 
     def __getattr__(self, name):
         return self._rruleset.__getattribute__(name)
@@ -47,17 +51,34 @@ class rruleset:
         yield from self._rruleset
 
     def __str__(self):
-        rrule_strs = [str(rule) for rule in self._rrule]
-        dtstart_lines = [line for line in rrule_strs if line.startswith("DTSTART")]
+        rrule_str = "\n".join(str(rule) for rule in self._rrule)
+        dtstart_lines = [
+            line for line in rrule_str.splitlines() if line.startswith("DTSTART")
+        ]
 
-        rule = "\n".join({dtstart_lines[0], *rrule_strs})
+        rule = "\n".join(
+            [
+                dtstart_lines[0],
+                *(
+                    line
+                    for line in rrule_str.splitlines()
+                    if not line.startswith("DTSTART")
+                ),
+            ]
+        )
 
         if self._rdate:
             rule += f"\nRDATE:{','.join(date.strftime(date_format) for date in self._rdate)}"
 
         if self._exrule:
-            rule += "\n" + "\n".join(str(rule) for rule in self._exrule).replace(
-                "RRULE", "EXRULE"
+            exrule_str = "\n".join(
+                str(rule).replace("RRULE", "EXRULE") for rule in self._exrule
+            )
+
+            rule += "\n" + "\n".join(
+                line
+                for line in exrule_str.splitlines()
+                if not line.startswith("DTSTART")
             )
 
         if self._exdate:

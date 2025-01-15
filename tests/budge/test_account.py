@@ -5,6 +5,7 @@ from dateutil.rrule import MONTHLY, rrule
 from stockholm import Money
 
 from budge import Account, RepeatingTransaction, Transaction
+from budge.rrule import rruleset
 
 
 class TestAccount:
@@ -16,7 +17,13 @@ class TestAccount:
     rt1 = RepeatingTransaction("test 1", Money(1), schedule=rule1)
     rt1_manual = Transaction(rt1.description, rt1.amount, rule1[0].date())
 
-    rule2 = rrule(freq=MONTHLY, bymonthday=15, dtstart=today)
+    rule2 = rruleset()
+
+    rule2.rrule(rrule(freq=MONTHLY, bymonthday=15, dtstart=today))
+    rule2.rdate(date(2022, 12, 17))
+    rule2.exdate(date(2022, 12, 15))
+    rule2.exrule(rrule(freq=MONTHLY, bymonthday=20))
+
     rt2 = RepeatingTransaction("test 2", Money(2), schedule=rule2)
 
     acct = Account("test")
@@ -60,6 +67,8 @@ class TestAccount:
             next_date = transaction.date
 
     def test_running_balance(self):
+        """Verify that the running balance register accurately yields the current
+        account balance with each transaction."""
         end_date = self.today + relativedelta(months=3)
         balances = list(self.acct.running_balance(self.today, end_date))
 
@@ -98,5 +107,6 @@ class TestAccount:
 
         assert len(balances) == 32
         assert balances[0] == (self.today, Money(1))
-        assert balances[9] == (date(2022, 12, 15), Money(3))
+        assert balances[9] == (date(2022, 12, 15), Money(1))
+        assert balances[11] == (date(2022, 12, 17), Money(3))
         assert balances[-1] == (end_date, Money(4))

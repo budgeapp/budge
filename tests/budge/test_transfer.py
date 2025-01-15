@@ -1,61 +1,67 @@
 from datetime import date
 
+import dateutil.rrule
 from dateutil.relativedelta import relativedelta
-from dateutil.rrule import MONTHLY, rrule
+from pytest import fixture
 from stockholm import Money
 
 from budge import Account, RepeatingTransfer, Transfer
 
 
-class TestTransfer:
-    today = date(2022, 12, 6)
-
-    a1 = Account("a1")
-    a2 = Account("a2")
-
-    def test_transfer(self):
-        """
-        Verify that a transfer between two accounts correctly updates the
-        balance of each account.
-        """
-        transfer = Transfer(
-            date=self.today,
-            amount=Money(100),
-            description="test transfer",
-            from_account=self.a1,
-            to_account=self.a2,
-        )
-
-        assert transfer.from_transaction.amount == Money(-100)
-        assert transfer.to_transaction.amount == Money(100)
-
-        assert self.a1.balance(self.today) == Money(-100)
-        assert self.a2.balance(self.today) == Money(100)
+@fixture
+def from_account():
+    return Account("from account")
 
 
-class TestRepeatingTransfer:
-    today = date(2022, 12, 6)
+@fixture
+def to_account():
+    return Account("to account")
 
-    a1 = Account("a1")
-    a2 = Account("a2")
 
-    def test_repeating_transfer(self):
-        """
-        Verify that a repeating transfer between two accounts correctly updates
-        the balance of each account.
-        """
-        transfer = RepeatingTransfer(
-            amount=Money(100),
-            description="test transfer",
-            from_account=self.a1,
-            to_account=self.a2,
-            schedule=rrule(freq=MONTHLY, bymonthday=1, dtstart=self.today),
-        )
+@fixture
+def transfer(today: date, from_account: Account, to_account: Account):
+    return Transfer(
+        description="test transfer",
+        amount=Money(100),
+        date=today,
+        from_account=from_account,
+        to_account=to_account,
+    )
 
-        assert transfer.from_transaction.amount == Money(-100)
-        assert transfer.to_transaction.amount == Money(100)
 
-        test_date = self.today + relativedelta(months=6)
+@fixture
+def repeating_transfer(
+    rrule: dateutil.rrule.rrule, from_account: Account, to_account: Account
+):
+    return RepeatingTransfer(
+        "test repeating transfer",
+        Money(100),
+        from_account=from_account,
+        to_account=to_account,
+        schedule=rrule,
+    )
 
-        assert self.a1.balance(test_date) == Money(-600)
-        assert self.a2.balance(test_date) == Money(600)
+
+def test_transfer(
+    today: date, transfer: Transfer, from_account: Account, to_account: Account
+):
+    assert transfer.from_transaction.amount == Money(-100)
+    assert transfer.to_transaction.amount == Money(100)
+
+    assert from_account.balance(today) == Money(-100)
+    assert to_account.balance(today) == Money(100)
+
+
+def test_repeating_transfer(
+    today: date,
+    repeating_transfer: RepeatingTransfer,
+    from_account: Account,
+    to_account: Account,
+):
+    assert repeating_transfer.from_transaction.amount == Money(-100)
+    assert repeating_transfer.to_transaction.amount == Money(100)
+
+    as_of = today + relativedelta(months=6)
+
+    assert from_account.balance(as_of) == Money(-600)
+    assert to_account.balance(as_of) == Money(600)

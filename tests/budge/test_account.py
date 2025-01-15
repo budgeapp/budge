@@ -1,102 +1,103 @@
 from datetime import date
 
+import dateutil.rrule
 from dateutil.relativedelta import relativedelta
-from dateutil.rrule import MONTHLY, rrule
+from pytest import fixture
 from stockholm import Money
 
 from budge import Account, RepeatingTransaction, Transaction
+from budge.rrule import rruleset
 
 
-class TestAccount:
-    today = date(2022, 12, 6)
+@fixture(scope="session")
+def account(
+    transaction: Transaction,
+    repeating_transaction_rrule: RepeatingTransaction,
+    repeating_transaction_rruleset: RepeatingTransaction,
+):
+    acct = Account(name="test")
 
-    t1 = Transaction("test 1", Money(1), date(2022, 12, 1))
+    manual_transaction = Transaction(
+        repeating_transaction_rrule.description,
+        repeating_transaction_rrule.amount,
+        list(repeating_transaction_rrule)[0].date,
+    )
 
-    rule1 = rrule(freq=MONTHLY, bymonthday=1, dtstart=today)
-    rt1 = RepeatingTransaction("test 1", Money(1), schedule=rule1)
-    rt1_manual = Transaction(rt1.description, rt1.amount, rule1[0].date())
+    acct.repeating_transactions.add(
+        repeating_transaction_rrule, repeating_transaction_rruleset
+    )
+    acct.transactions.add(transaction, manual_transaction)
 
-    rule2 = rrule(freq=MONTHLY, bymonthday=15, dtstart=today)
-    rt2 = RepeatingTransaction("test 2", Money(2), schedule=rule2)
+    return acct
 
-    acct = Account("test")
-    acct.transactions.add(t1, rt1_manual)
-    acct.repeating_transactions.add(rt1)
-    acct.repeating_transactions.add(rt2)
 
-    def test_balance(self):
-        """
-        Verify that the balance on the given date is equal to the value of all
-        transactions up to and including that date.
-        """
-        assert self.acct.balance(self.today) == Money(1)
+@fixture(scope="session")
+def transaction():
+    return Transaction("test transaction", Money(1), date(2022, 12, 1))
 
-    def test_balance_as_of_future(self):
-        """
-        Verify that the balance as of one year in the future is equal to the
-        expected amount after accounting for all repeating transactions.
-        """
-        as_of = self.today + relativedelta(years=1)
-        assert self.acct.balance(as_of) == Money(37)
 
-    def test_transactions_range(self):
-        """
-        Verify that the transactions_range method returns the correct number of
-        transactions between the given start and end dates.
-        """
-        start_date = self.today + relativedelta(months=6)
-        end_date = self.today + relativedelta(months=9)
+@fixture(scope="session")
+def repeating_transaction_rrule(today: date, rrule: dateutil.rrule.rrule):
+    return RepeatingTransaction(
+        "test repeating transaction with rrule",
+        Money(1),
+        schedule=rrule,
+    )
 
-        transactions = list(self.acct.transactions_range(start_date, end_date))
-        assert len(transactions) == 6
 
-    def test_transactions_range_is_sorted(self):
-        """Verify that transactions yielded by Account.__iter__ are ordered by ascending
-        date."""
-        next_date = list(self.acct.transactions)[0].date
+@fixture(scope="session")
+def repeating_transaction_rruleset(rruleset: rruleset):
+    return RepeatingTransaction(
+        "test repeating transaction with rruleset", Money(2), schedule=rruleset
+    )
 
-        for transaction in self.acct.transactions:
-            assert transaction.date >= next_date
-            next_date = transaction.date
 
-    def test_running_balance(self):
-        end_date = self.today + relativedelta(months=3)
-        balances = list(self.acct.running_balance(self.today, end_date))
+def test_account_balance(account: Account, today: date):
+    assert account.balance(today) == Money(1)
+    assert account.balance(today + relativedelta(years=1)) == Money(37)
 
-        assert len(balances) == 6
-        assert balances[0].balance == Money(3)
-        assert balances[1].balance == Money(4)
-        assert balances[-1].balance == Money(10)
 
-    def test_daily_balance_past(self):
-        """
-        Verify that the daily_balance method returns the correct balances for each
-        day in the past month, starting from a given start date and ending on today's
-        date. The initial balance should be zero, and the balance on today's date
-        should match the expected value.
-        """
-        start_date = date(2022, 11, 6)
-        balances = list(
-            self.acct.daily_balance(start_date=start_date, end_date=self.today)
-        )
+def test_account_transactions_range(account: Account, today: date):
+    end_date = today + relativedelta(months=3)
+    transactions = list(account.transactions_range(today, end_date))
 
-        assert len(balances) == 31
-        assert balances[0] == (start_date, Money(0))
-        assert balances[-1] == (self.today, Money(1))
+    assert len(transactions) == 6
+    assert transactions[0].description == "test repeating transaction with rruleset"
+    assert transactions[0].date == date(2022, 12, 17)
 
-    def test_daily_balance_future(self):
-        """
-        Verify that the daily_balance method returns the correct balances for each
-        day in the future month, starting from today's date and ending on a given
-        end date. The initial balance should be the expected value, and the balance
-        on the end date should match the expected value.
-        """
-        end_date = self.today + relativedelta(months=1)
-        balances = list(
-            self.acct.daily_balance(start_date=self.today, end_date=end_date)
-        )
+    assert transactions[-1].date == date(2023, 3, 1)
 
-        assert len(balances) == 32
-        assert balances[0] == (self.today, Money(1))
-        assert balances[9] == (date(2022, 12, 15), Money(3))
-        assert balances[-1] == (end_date, Money(4))
+    next_date = transactions[0].date
+    for transaction in transactions:
+        assert transaction.date >= next_date
+        next_date = transaction.date
+
+
+def test_account_running_balance(account: Account, today: date):
+    end_date = today + relativedelta(months=3)
+    balances = list(account.running_balance(today, end_date))
+
+    assert len(balances) == 6
+    assert balances[0].balance == Money(3)
+    assert balances[1].balance == Money(4)
+    assert balances[-1].balance == Money(10)
+
+
+def test_account_daily_balance_past(account: Account, today: date):
+    start_date = today + relativedelta(months=-1)
+    balances = list(account.daily_balance(start_date, today))
+
+    assert len(balances) == 31
+    assert balances[0] == (start_date, Money(0))
+    assert balances[-1] == (today, Money(1))
+
+
+def test_account_daily_balance_future(account: Account, today: date):
+    end_date = today + relativedelta(months=1)
+    balances = list(account.daily_balance(today, end_date))
+
+    assert len(balances) == 32
+    assert balances[0] == (today, Money(1))
+    assert balances[9] == (date(2022, 12, 15), Money(1))
+    assert balances[11] == (date(2022, 12, 17), Money(3))
+    assert balances[-1] == (end_date, Money(4))

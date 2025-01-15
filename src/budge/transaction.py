@@ -2,9 +2,10 @@ from dataclasses import dataclass, field
 from datetime import date as _date
 from typing import Self
 
-from dateutil.rrule import rrule, rruleset
+from dateutil.rrule import rrule
 
 from budge.money import IntoMoney
+from budge.rrule import rruleset
 
 from . import account
 

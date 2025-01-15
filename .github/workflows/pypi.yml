@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@d577e74f98a427f48a3593c77631249523bddd01
+      - uses: astral-sh/setup-uv@77cc1aee2296e0cf79ee09d8178785ca12fd9cf0
         with:
           enable-cache: true
       - uses: actions/setup-python@v5

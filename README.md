@@ -14,7 +14,7 @@ pip install budge
 
 ## Usage
 
-See the [demo notebook][demo] for usage examples.
+See the [example directory][demo] for usage examples.
 
 ## Copyright
 
@@ -24,7 +24,7 @@ Copyright © 2025 Jesse Brooklyn Hannah. Licensed under the terms of the
 [badge/pypi-publish]: https://github.com/budgeapp/budge/actions/workflows/pypi.yml/badge.svg
 [badge/pypi]: https://img.shields.io/pypi/v/budge
 [badge/pytest]: https://github.com/budgeapp/budge/actions/workflows/pytest.yml/badge.svg
-[demo]: https://github.com/budgeapp/budge/blob/trunk/demo.ipynb
+[demo]: https://github.com/budgeapp/budge/blob/trunk/example
 [license]: https://github.com/budgeapp/budge/blob/trunk/LICENSE.md
 [pypi]: https://pypi.org/project/budge/
 [workflows/pypi-publish]: https://github.com/budgeapp/budge/actions/workflows/pypi.yml

@@ -9,10 +9,11 @@
 import importlib.metadata
 import os
 import sys
+from datetime import date
 
 project = "budge"
-copyright = "2025, Jesse Brooklyn Hannah"
-author = "Jesse Brooklyn Hannah"
+author = importlib.metadata.metadata(project)["Author-email"]
+copyright = f"{date.today().year} {author}"
 release = importlib.metadata.version(project)
 version = ".".join(release.split(".")[:2])
 

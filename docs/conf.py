@@ -11,7 +11,7 @@ import os
 import sys
 
 project = "budge"
-copyright = "2024, Jesse Brooklyn Hannah"
+copyright = "2025, Jesse Brooklyn Hannah"
 author = "Jesse Brooklyn Hannah"
 release = importlib.metadata.version(project)
 version = ".".join(release.split(".")[:2])

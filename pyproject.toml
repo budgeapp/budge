@@ -7,7 +7,11 @@ authors = [{ name = "Jesse Brooklyn Hannah", email = "jesse@jbhannah.net" }]
 classifiers = [
     "Development Status :: 4 - Beta",
     "License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Office/Business :: Financial :: Accounting",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
 ]
 requires-python = "~=3.13"
 dependencies = ["python-dateutil~=2.9.0", "stockholm~=0.5.7"]

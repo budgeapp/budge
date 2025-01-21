@@ -17,8 +17,9 @@ class Transaction:
     description: str
     amount: IntoMoney = IntoMoney()
     date: _date = field(default_factory=_date.today)
-    account: "account.Account | None" = field(default=None, kw_only=True)
-    parent: Self | None = field(default=None, kw_only=True)
+    account: "account.Account | None" = None
+    parent: Self | None = None
+    cleared: bool = False
 
     def __hash__(self):
         return hash((self.amount, self.description, self.date))
@@ -53,6 +54,7 @@ class RepeatingTransaction(Transaction):
                 date=next.date(),
                 account=self.account,
                 parent=self,
+                cleared=True,
             )
             for next in self.schedule
         )

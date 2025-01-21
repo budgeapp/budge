@@ -18,8 +18,18 @@ class Transfer(Transaction):
         Create the from and to transactions, add them to the respective accounts,
         and set their parent to this transfer.
         """
-        self.from_transaction = Transaction(self.description, -self.amount, self.date)
-        self.to_transaction = Transaction(self.description, self.amount, self.date)
+        self.from_transaction = Transaction(
+            self.description,
+            -self.amount,
+            self.date,
+            cleared=self.cleared,
+        )
+        self.to_transaction = Transaction(
+            self.description,
+            self.amount,
+            self.date,
+            cleared=self.cleared,
+        )
 
         self.from_transaction.parent = self.to_transaction.parent = self
 
@@ -40,10 +50,16 @@ class RepeatingTransfer(Transfer, RepeatingTransaction):
         respective accounts, and set their parent to this repeating transfer.
         """
         self.from_transaction = RepeatingTransaction(
-            self.description, -self.amount, schedule=self.schedule
+            self.description,
+            -self.amount,
+            schedule=self.schedule,
+            cleared=True,
         )
         self.to_transaction = RepeatingTransaction(
-            self.description, self.amount, schedule=self.schedule
+            self.description,
+            self.amount,
+            schedule=self.schedule,
+            cleared=True,
         )
 
         self.from_transaction.parent = self.to_transaction.parent = self

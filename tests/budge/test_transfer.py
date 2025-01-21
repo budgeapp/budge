@@ -48,6 +48,9 @@ def test_transfer(
     assert transfer.from_transaction.amount == Money(-100)
     assert transfer.to_transaction.amount == Money(100)
 
+    assert transfer.from_transaction.cleared is False
+    assert transfer.to_transaction.cleared is False
+
     assert from_account.balance(today) == Money(-100)
     assert to_account.balance(today) == Money(100)
 
@@ -60,6 +63,9 @@ def test_repeating_transfer(
 ):
     assert repeating_transfer.from_transaction.amount == Money(-100)
     assert repeating_transfer.to_transaction.amount == Money(100)
+
+    assert repeating_transfer.from_transaction.cleared is True
+    assert repeating_transfer.to_transaction.cleared is True
 
     as_of = today + relativedelta(months=6)
 

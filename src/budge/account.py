@@ -85,7 +85,7 @@ class Account:
             else Money(0)
         )
 
-        for transaction in self.transactions_range(start_date, end_date):
+        for transaction in self.transactions_range(start_date, end_date, cleared):
             balance += transaction.amount
             yield RunningBalance(transaction, balance)
 

@@ -126,6 +126,24 @@ def test_account_running_balance(account: Account, today: date):
     assert balances[-1].balance == Money(11)
 
 
+def test_account_running_balance_cleared_true(account: Account, today: date):
+    end_date = today + relativedelta(months=3)
+    balances = list(account.running_balance(today, end_date, cleared=True))
+
+    assert len(balances) == 5
+    assert balances[0].balance == Money(3)
+    assert balances[1].balance == Money(5)
+    assert balances[-1].balance == Money(9)
+
+
+def test_account_running_balance_cleared_false(account: Account, today: date):
+    end_date = today + relativedelta(months=3)
+    balances = list(account.running_balance(today, end_date, cleared=False))
+
+    assert len(balances) == 1
+    assert balances[0].balance == Money(2)
+
+
 def test_account_daily_balance_past(account: Account, today: date):
     start_date = today + relativedelta(months=-1)
     balances = list(account.daily_balance(start_date, today))

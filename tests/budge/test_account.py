@@ -162,3 +162,25 @@ def test_account_daily_balance_future(account: Account, today: date):
     assert balances[9] == (date(2022, 12, 15), Money(2))
     assert balances[11] == (date(2022, 12, 17), Money(4))
     assert balances[-1] == (end_date, Money(5))
+
+
+def test_account_daily_balance_cleared_true(account: Account, today: date):
+    end_date = today + relativedelta(months=1)
+    balances = list(account.daily_balance(today, end_date, cleared=True))
+
+    assert len(balances) == 32
+    assert balances[0] == (today, Money(1))
+    assert balances[9] == (date(2022, 12, 15), Money(1))
+    assert balances[11] == (date(2022, 12, 17), Money(3))
+    assert balances[-1] == (end_date, Money(3))
+
+
+def test_account_daily_balance_cleared_false(account: Account, today: date):
+    end_date = today + relativedelta(months=1)
+    balances = list(account.daily_balance(today, end_date, cleared=False))
+
+    assert len(balances) == 32
+    assert balances[0] == (today, Money(1))
+    assert balances[9] == (date(2022, 12, 15), Money(1))
+    assert balances[11] == (date(2022, 12, 17), Money(1))
+    assert balances[-1] == (end_date, Money(2))

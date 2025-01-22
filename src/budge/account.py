@@ -113,7 +113,7 @@ class Account:
         given, the date of the first transaction is used. If the end date is not
         given, today's date is used.
         """
-        start_date = start_date or next(self.transactions_range()).date
+        start_date = start_date or next(self.transactions_range(cleared=cleared)).date
         end_date = end_date or date.today()
 
         balance = self.balance(start_date, cleared)

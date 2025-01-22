@@ -45,18 +45,22 @@ def cleared_transaction():
 
 
 @fixture
-def repeating_transaction_rrule(rrule: dateutil.rrule.rrule):
+def repeating_transaction_rrule(today: date, rrule: dateutil.rrule.rrule):
     return RepeatingTransaction(
         "test repeating transaction with rrule",
         Money(1),
         schedule=rrule,
+        _last_cleared=today + relativedelta(months=1),
     )
 
 
 @fixture
-def repeating_transaction_rruleset(rruleset: rruleset):
+def repeating_transaction_rruleset(today: date, rruleset: rruleset):
     return RepeatingTransaction(
-        "test repeating transaction with rruleset", Money(2), schedule=rruleset
+        "test repeating transaction with rruleset",
+        Money(2),
+        schedule=rruleset,
+        _last_cleared=today + relativedelta(months=1),
     )
 
 
@@ -67,12 +71,12 @@ def test_account_balance(account: Account, today: date):
 
 def test_account_balance_cleared_true(account: Account, today: date):
     assert account.balance(today, cleared=True) == Money(1)
-    assert account.balance(today + relativedelta(years=1), cleared=True) == Money(36)
+    assert account.balance(today + relativedelta(years=1), cleared=True) == Money(3)
 
 
 def test_account_balance_cleared_false(account: Account, today: date):
     assert account.balance(today, cleared=False) == Money(1)
-    assert account.balance(today + relativedelta(years=1), cleared=False) == Money(2)
+    assert account.balance(today + relativedelta(years=1), cleared=False) == Money(35)
 
 
 def test_account_transactions_range(account: Account, today: date):
@@ -95,23 +99,16 @@ def test_account_transactions_range_cleared_true(account: Account, today: date):
     end_date = today + relativedelta(months=3)
     transactions = list(account.transactions_range(today, end_date, cleared=True))
 
-    assert len(transactions) == 5
+    assert len(transactions) == 1
     assert transactions[0].description == "test repeating transaction with rruleset"
     assert transactions[0].date == date(2022, 12, 17)
-
-    assert transactions[-1].date == date(2023, 3, 1)
-
-    next_date = transactions[0].date
-    for transaction in transactions:
-        assert transaction.date >= next_date
-        next_date = transaction.date
 
 
 def test_account_transactions_range_cleared_false(account: Account, today: date):
     end_date = today + relativedelta(months=3)
     transactions = list(account.transactions_range(today, end_date, cleared=False))
 
-    assert len(transactions) == 1
+    assert len(transactions) == 5
     assert transactions[0].description == "test repeating transaction with rrule"
     assert transactions[0].date == date(2023, 1, 1)
 
@@ -130,18 +127,18 @@ def test_account_running_balance_cleared_true(account: Account, today: date):
     end_date = today + relativedelta(months=3)
     balances = list(account.running_balance(today, end_date, cleared=True))
 
-    assert len(balances) == 5
+    assert len(balances) == 1
     assert balances[0].balance == Money(3)
-    assert balances[1].balance == Money(5)
-    assert balances[-1].balance == Money(9)
 
 
 def test_account_running_balance_cleared_false(account: Account, today: date):
     end_date = today + relativedelta(months=3)
     balances = list(account.running_balance(today, end_date, cleared=False))
 
-    assert len(balances) == 1
+    assert len(balances) == 5
     assert balances[0].balance == Money(2)
+    assert balances[1].balance == Money(4)
+    assert balances[-1].balance == Money(8)
 
 
 def test_account_daily_balance_past(account: Account, today: date):

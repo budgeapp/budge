@@ -61,13 +61,18 @@ def test_repeating_transfer(
     from_account: Account,
     to_account: Account,
 ):
+    repeating_transfer.last_cleared = today + relativedelta(months=3)
+
     assert repeating_transfer.from_transaction.amount == Money(-100)
     assert repeating_transfer.to_transaction.amount == Money(100)
 
-    assert repeating_transfer.from_transaction.cleared is True
-    assert repeating_transfer.to_transaction.cleared is True
+    assert repeating_transfer.from_transaction.cleared is False
+    assert repeating_transfer.to_transaction.cleared is False
 
     as_of = today + relativedelta(months=6)
 
     assert from_account.balance(as_of) == Money(-600)
     assert to_account.balance(as_of) == Money(600)
+
+    assert from_account.balance(as_of, cleared=True) == Money(-300)
+    assert to_account.balance(as_of, cleared=True) == Money(300)

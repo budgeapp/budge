@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from datetime import date as _date
+from datetime import datetime
 from typing import Self
 
 from dateutil.rrule import rrule
@@ -37,6 +38,22 @@ class RepeatingTransaction(Transaction):
     """
 
     schedule: rrule | rruleset
+    _last_cleared: _date | None = None
+
+    @property
+    def last_cleared(self) -> _date | None:
+        if self._last_cleared is None:
+            return None
+
+        return (
+            self._last_cleared
+            if isinstance(self._last_cleared, datetime)
+            else datetime.combine(self._last_cleared, datetime.max.time())
+        )
+
+    @last_cleared.setter
+    def last_cleared(self, date: _date | None):
+        self._last_cleared = date
 
     def __hash__(self):
         return hash((self.amount, self.description, self.schedule))
@@ -54,7 +71,7 @@ class RepeatingTransaction(Transaction):
                 date=next.date(),
                 account=self.account,
                 parent=self,
-                cleared=True,
+                cleared=(next <= self.last_cleared if self.last_cleared else False),
             )
             for next in self.schedule
         )

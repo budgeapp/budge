@@ -1,4 +1,5 @@
 from dataclasses import InitVar, dataclass, field
+from datetime import date
 
 from .account import Account
 from .transaction import RepeatingTransaction, Transaction
@@ -44,6 +45,15 @@ class RepeatingTransfer(Transfer, RepeatingTransaction):
     `dateutil.rrule.rrule` or `dateutil.rrule.rruleset`.
     """
 
+    @property
+    def last_cleared(self) -> date | None:
+        return super().last_cleared
+
+    @last_cleared.setter
+    def last_cleared(self, date: date | None):
+        self._last_cleared = date
+        self.from_transaction.last_cleared = self.to_transaction.last_cleared = date  # type: ignore
+
     def __post_init__(self, from_account: Account, to_account: Account):
         """
         Create the from and to repeating transactions, add them to the
@@ -52,17 +62,20 @@ class RepeatingTransfer(Transfer, RepeatingTransaction):
         self.from_transaction = RepeatingTransaction(
             self.description,
             -self.amount,
+            parent=self,
             schedule=self.schedule,
-            cleared=True,
         )
+
         self.to_transaction = RepeatingTransaction(
             self.description,
             self.amount,
+            parent=self,
             schedule=self.schedule,
-            cleared=True,
         )
 
-        self.from_transaction.parent = self.to_transaction.parent = self
+        self.from_transaction.last_cleared = self.to_transaction.last_cleared = (
+            self.last_cleared
+        )
 
         from_account.repeating_transactions.add(self.from_transaction)
         to_account.repeating_transactions.add(self.to_transaction)

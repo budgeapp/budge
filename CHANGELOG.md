@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.2.0 (unreleased)
+## v1.2.0 (2025-01-21)
 
 - Add `Transaction.cleared` boolean field.
 - Add `RepeatingTransaction.last_cleared` date field. All `Transactions` yielded

@@ -1,11 +1,11 @@
 [project]
 name = "budge"
-version = "1.1.1"
+version = "1.2.0"
 description = "Track your budgets and forecast your balances with Python."
 readme = "README.md"
 authors = [{ name = "Jesse Brooklyn Hannah", email = "jesse@jbhannah.net" }]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Production/Stable",
     "License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",

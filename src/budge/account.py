@@ -56,7 +56,10 @@ class Account:
         )
 
     def transactions_range(
-        self, start_date: date | None = None, end_date: date | None = None
+        self,
+        start_date: date | None = None,
+        end_date: date | None = None,
+        cleared: bool | None = None,
     ) -> Generator[Transaction]:
         """Iterate over transactions in the account over the given range."""
         for transaction in self:
@@ -64,15 +67,20 @@ class Account:
                 continue
             if end_date and transaction.date > end_date:
                 break
-            yield transaction
+
+            if cleared is None or transaction.cleared == cleared:
+                yield transaction
 
     def running_balance(
-        self, start_date: date | None = None, end_date: date | None = None
+        self,
+        start_date: date | None = None,
+        end_date: date | None = None,
+        cleared: bool | None = None,
     ) -> Generator[RunningBalance]:
         """Iterate over transactions in the account over the given range with a
         running account balance."""
         balance = (
-            self.balance(start_date + relativedelta(days=-1))
+            self.balance(start_date + relativedelta(days=-1), cleared)
             if start_date is not None
             else Money(0)
         )
@@ -81,17 +89,20 @@ class Account:
             balance += transaction.amount
             yield RunningBalance(transaction, balance)
 
-    def balance(self, as_of: date | None = None):
+    def balance(self, as_of: date | None = None, cleared: bool | None = None):
         """Calculate the account balance as of the given date."""
         as_of = as_of or date.today()
 
         return Money.sum(
             transaction.amount
-            for transaction in self.transactions_range(end_date=as_of)
+            for transaction in self.transactions_range(end_date=as_of, cleared=cleared)
         )
 
     def daily_balance(
-        self, start_date: date | None = None, end_date: date | None = None
+        self,
+        start_date: date | None = None,
+        end_date: date | None = None,
+        cleared: bool | None = None,
     ) -> Generator[DailyBalance]:
         """
         Iterate over the daily balance of the account, yielding tuples of date
@@ -105,17 +116,20 @@ class Account:
         start_date = start_date or next(self.transactions_range()).date
         end_date = end_date or date.today()
 
-        balance = self.balance(start_date)
+        balance = self.balance(start_date, cleared)
         yield DailyBalance(start_date, balance)
 
         for _date, delta in self._daily_balance_delta(
-            start_date + timedelta(days=1), end_date
+            start_date + timedelta(days=1), end_date, cleared
         ):
             balance += delta
             yield DailyBalance(_date, balance)
 
     def _deltas_by_date(
-        self, start_date: date, end_date: date
+        self,
+        start_date: date,
+        end_date: date,
+        cleared: bool | None = None,
     ) -> Generator[DailyBalance]:
         """
         Iterate over the deltas in the account balance for each date in the
@@ -129,12 +143,16 @@ class Account:
                 _date, Money.sum(transaction.amount for transaction in transactions)
             )
             for _date, transactions in groupby(
-                self.transactions_range(start_date, end_date), key=lambda t: t.date
+                self.transactions_range(start_date, end_date, cleared),
+                key=lambda t: t.date,
             )
         )
 
     def _daily_balance_delta(
-        self, start_date: date, end_date: date
+        self,
+        start_date: date,
+        end_date: date,
+        cleared: bool | None = None,
     ) -> Generator[DailyBalance]:
         """
         Calculate the daily change in account balance over the specified date range.
@@ -148,7 +166,7 @@ class Account:
             DailyBalance(_date, Money.sum(delta.balance for delta in deltas))
             for _date, deltas in groupby(
                 merge(
-                    self._deltas_by_date(start_date, end_date),
+                    self._deltas_by_date(start_date, end_date, cleared),
                     (
                         DailyBalance(_date, Money(0))
                         for _date in daterange(start_date, end_date)

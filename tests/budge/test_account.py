@@ -40,7 +40,7 @@ def transaction():
 @fixture
 def cleared_transaction():
     return Transaction(
-        "test cleared transaction", Money(1), date(2022, 12, 1), cleared=True
+        "test cleared transaction", Money(10), date(2022, 12, 1), cleared=True
     )
 
 
@@ -48,7 +48,7 @@ def cleared_transaction():
 def repeating_transaction_rrule(today: date, rrule: dateutil.rrule.rrule):
     return RepeatingTransaction(
         "test repeating transaction with rrule",
-        Money(1),
+        Money(100),
         schedule=rrule,
         _last_cleared=today + relativedelta(months=1),
     )
@@ -58,25 +58,27 @@ def repeating_transaction_rrule(today: date, rrule: dateutil.rrule.rrule):
 def repeating_transaction_rruleset(today: date, rruleset: rruleset):
     return RepeatingTransaction(
         "test repeating transaction with rruleset",
-        Money(2),
+        Money(1000),
         schedule=rruleset,
         _last_cleared=today + relativedelta(months=1),
     )
 
 
 def test_account_balance(account: Account, today: date):
-    assert account.balance(today) == Money(2)
-    assert account.balance(today + relativedelta(years=1)) == Money(38)
+    assert account.balance(today) == Money(11)
+    assert account.balance(today + relativedelta(years=1)) == Money(13211)
 
 
 def test_account_balance_cleared_true(account: Account, today: date):
-    assert account.balance(today, cleared=True) == Money(1)
-    assert account.balance(today + relativedelta(years=1), cleared=True) == Money(3)
+    assert account.balance(today, cleared=True) == Money(10)
+    assert account.balance(today + relativedelta(years=1), cleared=True) == Money(1010)
 
 
 def test_account_balance_cleared_false(account: Account, today: date):
     assert account.balance(today, cleared=False) == Money(1)
-    assert account.balance(today + relativedelta(years=1), cleared=False) == Money(35)
+    assert account.balance(today + relativedelta(years=1), cleared=False) == Money(
+        12201
+    )
 
 
 def test_account_transactions_range(account: Account, today: date):
@@ -118,9 +120,9 @@ def test_account_running_balance(account: Account, today: date):
     balances = list(account.running_balance(today, end_date))
 
     assert len(balances) == 6
-    assert balances[0].balance == Money(4)
-    assert balances[1].balance == Money(5)
-    assert balances[-1].balance == Money(11)
+    assert balances[0].balance == Money(1011)
+    assert balances[1].balance == Money(1111)
+    assert balances[-1].balance == Money(3311)
 
 
 def test_account_running_balance_cleared_true(account: Account, today: date):
@@ -128,7 +130,7 @@ def test_account_running_balance_cleared_true(account: Account, today: date):
     balances = list(account.running_balance(today, end_date, cleared=True))
 
     assert len(balances) == 1
-    assert balances[0].balance == Money(3)
+    assert balances[0].balance == Money(1010)
 
 
 def test_account_running_balance_cleared_false(account: Account, today: date):
@@ -136,9 +138,9 @@ def test_account_running_balance_cleared_false(account: Account, today: date):
     balances = list(account.running_balance(today, end_date, cleared=False))
 
     assert len(balances) == 5
-    assert balances[0].balance == Money(2)
-    assert balances[1].balance == Money(4)
-    assert balances[-1].balance == Money(8)
+    assert balances[0].balance == Money(101)
+    assert balances[1].balance == Money(1101)
+    assert balances[-1].balance == Money(2301)
 
 
 def test_account_daily_balance_past(account: Account, today: date):
@@ -147,7 +149,7 @@ def test_account_daily_balance_past(account: Account, today: date):
 
     assert len(balances) == 31
     assert balances[0] == (start_date, Money(0))
-    assert balances[-1] == (today, Money(2))
+    assert balances[-1] == (today, Money(11))
 
 
 def test_account_daily_balance_future(account: Account, today: date):
@@ -155,10 +157,10 @@ def test_account_daily_balance_future(account: Account, today: date):
     balances = list(account.daily_balance(today, end_date))
 
     assert len(balances) == 32
-    assert balances[0] == (today, Money(2))
-    assert balances[9] == (date(2022, 12, 15), Money(2))
-    assert balances[11] == (date(2022, 12, 17), Money(4))
-    assert balances[-1] == (end_date, Money(5))
+    assert balances[0] == (today, Money(11))
+    assert balances[9] == (date(2022, 12, 15), Money(11))
+    assert balances[11] == (date(2022, 12, 17), Money(1011))
+    assert balances[-1] == (end_date, Money(1111))
 
 
 def test_account_daily_balance_cleared_true(account: Account, today: date):
@@ -166,10 +168,10 @@ def test_account_daily_balance_cleared_true(account: Account, today: date):
     balances = list(account.daily_balance(today, end_date, cleared=True))
 
     assert len(balances) == 32
-    assert balances[0] == (today, Money(1))
-    assert balances[9] == (date(2022, 12, 15), Money(1))
-    assert balances[11] == (date(2022, 12, 17), Money(3))
-    assert balances[-1] == (end_date, Money(3))
+    assert balances[0] == (today, Money(10))
+    assert balances[9] == (date(2022, 12, 15), Money(10))
+    assert balances[11] == (date(2022, 12, 17), Money(1010))
+    assert balances[-1] == (end_date, Money(1010))
 
 
 def test_account_daily_balance_cleared_false(account: Account, today: date):
@@ -180,4 +182,4 @@ def test_account_daily_balance_cleared_false(account: Account, today: date):
     assert balances[0] == (today, Money(1))
     assert balances[9] == (date(2022, 12, 15), Money(1))
     assert balances[11] == (date(2022, 12, 17), Money(1))
-    assert balances[-1] == (end_date, Money(2))
+    assert balances[-1] == (end_date, Money(101))

@@ -1,5 +1,14 @@
 # Changelog
 
+## v1.2.0 (unreleased)
+
+- Add `Transaction.cleared` boolean field.
+- Add `RepeatingTransaction.last_cleared` date field. All `Transactions` yielded
+  will have their `cleared` field set to true if the date is before the value of
+  `last_cleared`. The same rule applies to `RepeatingTransfer`.
+- Add `cleared: bool | None` parameters to `Account` methods, where a non-`None`
+  value filters account transactions by the given value for `cleared`.
+
 ## v1.1.1 (2025-01-13)
 
 - Removed the ability to set a transaction's amount to a callback until I've

@@ -62,7 +62,7 @@ jobs:
         with:
           name: python-package-distributions
           path: dist/
-      - uses: sigstore/gh-action-sigstore-python@31b501fcde5535fc0b1e410fa39996aed27f1167
+      - uses: sigstore/gh-action-sigstore-python@300d3393a8effd58cc9e99f701c7c7238fb517d2
         with:
           inputs: >-
             ./dist/*.whl

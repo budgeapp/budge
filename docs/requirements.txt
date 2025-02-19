@@ -100,9 +100,9 @@ snowballstemmer==2.2.0 \
 sphinx==8.1.3 \
     --hash=sha256:09719015511837b76bf6e03e42eb7595ac8c2e41eeb9c29c5b755c6b677992a2 \
     --hash=sha256:43c1911eecb0d3e161ad78611bc905d1ad0e523e4ddc202a58a821773dc4c927
-sphinx-autodoc-typehints==3.0.1 \
-    --hash=sha256:4b64b676a14b5b79cefb6628a6dc8070e320d4963e8ff640a2f3e9390ae9045a \
-    --hash=sha256:b9b40dd15dee54f6f810c924f863f9cf1c54f9f3265c495140ea01be7f44fa55
+sphinx-autodoc-typehints==3.1.0 \
+    --hash=sha256:67bdee7e27ba943976ce92ebc5647a976a7a08f9f689a826c54617b96a423913 \
+    --hash=sha256:a6b7b0b6df0a380783ce5b29150c2d30352746f027a3e294d37183995d3f23ed
 sphinx-rtd-theme==3.0.2 \
     --hash=sha256:422ccc750c3a3a311de4ae327e82affdaf59eb695ba4936538552f3b00f4ee13 \
     --hash=sha256:b7457bc25dda723b20b086a670b9953c859eab60a2a03ee8eb2bb23e176e5f85

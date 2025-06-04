@@ -3,8 +3,8 @@ from dataclasses import dataclass, field
 
 @dataclass
 class Collection[T]:
-    _attr_parent: str
-    _parent: object
+    attr_parent: str
+    parent: object
     data: dict[int, T] = field(init=False, default_factory=dict)
 
     def add(self, *items: T):
@@ -54,13 +54,13 @@ class Collection[T]:
             self.data[key] = item
 
     def _attach(self, item: T):
-        if getattr(item, self._attr_parent) is not None:
+        if getattr(item, self.attr_parent) is not None:
             raise ValueError("item already belongs to a collection")
 
-        setattr(item, self._attr_parent, self._parent)
+        setattr(item, self.attr_parent, self.parent)
 
     def _detach(self, item: T):
-        if getattr(item, self._attr_parent) is not self._parent:
+        if getattr(item, self.attr_parent) is not self.parent:
             raise ValueError("item does not belong to this collection")
 
-        setattr(item, self._attr_parent, None)
+        setattr(item, self.attr_parent, None)

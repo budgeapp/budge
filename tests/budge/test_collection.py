@@ -29,14 +29,14 @@ def test_add_item(collection):
     item = Item()
     collection.add(item)
     assert item in collection
-    assert item.parent == collection._parent
+    assert item.parent == collection.parent
 
 
 def test_add_multiple_items(collection):
     items = [Item(), Item()]
     collection.add(*items)
     assert all(item in collection for item in items)
-    assert all(item.parent == collection._parent for item in items)
+    assert all(item.parent == collection.parent for item in items)
 
 
 def test_add_item_already_in_other_collection(collection):

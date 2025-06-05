@@ -3,13 +3,12 @@
 Version 3, 29 June 2007
 
 Copyright (C) 2007 Free Software Foundation, Inc.
-<https://fsf.org/>
 
 Everyone is permitted to copy and distribute verbatim copies of this
 license document, but changing it is not allowed.
 
 This version of the GNU Lesser General Public License incorporates the
-terms and conditions of [version 3 of the GNU General Public License][gpl],
+terms and conditions of version 3 of the GNU General Public License,
 supplemented by the additional permissions listed below.
 
 ## 0. Additional Definitions
@@ -93,19 +92,19 @@ debugging such modifications, if you also do each of the following:
   these notices, as well as a reference directing the user to the
   copies of the GNU GPL and this license document.
 - d) Do one of the following:
-  - 0. Convey the Minimal Corresponding Source under the terms of
-       this License, and the Corresponding Application Code in a form
-       suitable for, and under terms that permit, the user to
-       recombine or relink the Application with a modified version of
-       the Linked Version to produce a modified Combined Work, in the
-       manner specified by section 6 of the GNU GPL for conveying
-       Corresponding Source.
-  - 1. Use a suitable shared library mechanism for linking with
-       the Library. A suitable mechanism is one that (a) uses at run
-       time a copy of the Library already present on the user's
-       computer system, and (b) will operate properly with a modified
-       version of the Library that is interface-compatible with the
-       Linked Version.
+  - Convey the Minimal Corresponding Source under the terms of
+    this License, and the Corresponding Application Code in a form
+    suitable for, and under terms that permit, the user to
+    recombine or relink the Application with a modified version of
+    the Linked Version to produce a modified Combined Work, in the
+    manner specified by section 6 of the GNU GPL for conveying
+    Corresponding Source.
+  - Use a suitable shared library mechanism for linking with
+    the Library. A suitable mechanism is one that (a) uses at run
+    time a copy of the Library already present on the user's
+    computer system, and (b) will operate properly with a modified
+    version of the Library that is interface-compatible with the
+    Linked Version.
 - e) Provide Installation Information, but only if you would
   otherwise be required to provide such information under section 6
   of the GNU GPL, and only to the extent that such information is
@@ -155,5 +154,3 @@ whether future versions of the GNU Lesser General Public License shall
 apply, that proxy's public statement of acceptance of any version is
 permanent authorization for you to choose that version for the
 Library.
-
-[gpl]: https://github.com/budgeapp/budge/blob/trunk/LICENSE-GPL.md
